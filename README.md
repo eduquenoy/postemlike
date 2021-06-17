@@ -1,2 +1,2 @@
 # Postemlike
- Un équivalent de l'outil Post'Em du LMS Sakai
+ Un équivalent à la norme IMS LTI de l'outil Post'Em du LMS Sakai
