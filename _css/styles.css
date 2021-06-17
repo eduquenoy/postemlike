@@ -1,0 +1,31 @@
+#tableall{
+    table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid rgba(130, 130, 130, 0.351);
+}
+#tableuser{
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid rgba(130, 130, 130, 0.351);
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background: #000000 !important;
+  color: #595959;
+  
+}
+.text-footer{
+  font-style: italic;
+  text-align: center;
+  font-size: smaller;
+}
