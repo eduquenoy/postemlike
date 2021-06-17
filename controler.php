@@ -1,4 +1,6 @@
 <?php 
+require_once("config.php");
+
 //print_r($_POST);//
 $code = $_POST['code'];
 $fileName = $_POST['filename'];
@@ -71,7 +73,11 @@ function displayAllInformations($fileName,$courseId){
         echo "<tr>";
         $line = $table[$d];
         for($c=0;$c<$sizeHead;$c++){
-            echo "<td class='text-break'>".$line[$c]."</td>";
+            if($c==0 && !strcasecmp($line[$sizeHead-1],"never")){
+                echo "<td class='text-break' style='color:red;'>".$line[$c]."</td>";
+            }else{
+                echo "<td class='text-break'>".$line[$c]."</td>";
+            }
         }
         echo "</tr>";
     }

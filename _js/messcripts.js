@@ -155,7 +155,7 @@ $('#form-submit').click(function(){//On a cliqué sur le bouton de soumission
             data: form_data,                         
             type: 'POST',
             success: function(php_script_response){
-                //alert(php_script_response); // <-- display response from the PHP script, if any
+                alert(php_script_response); // <-- display response from the PHP script, if any
                 location.reload();
                 
         }

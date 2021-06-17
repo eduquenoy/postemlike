@@ -1,7 +1,8 @@
 <?php
+require_once("config.php");
+
 //print_r($_FILES);
 //echo "Fichier : ".$_FILES['informations']['tmp_name'];
-
 
 //  print_r($_POST);
 //On traite le blob en premier
@@ -33,10 +34,39 @@ if ( 0 < $_FILES['file']['error'] ) {
 }
 else {
     $uploaddir = getcwd();
-//    $uploadfile = $uploaddir."/files//".basename($_FILES['file']['name']);
     $uploadfile = $uploaddir."/files//".$fileName;
     move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile);
-    echo "Success !";
+
+    //Traitement du fichier : ajout d'un champ "Consultation" visible uniquement par l'instructor
+    $row = 1;
+    $table= array();
+    if (($handle = fopen($uploadfile, "r+")) !== FALSE) {
+        while (($data = fgetcsv($handle, 0, $separator, $enclosure)) !== FALSE) {
+            
+            if($row == 1){
+                array_push($data,"Dernier accès");
+            }else{
+                array_push($data,"never");
+            }
+            $table[$row] = $data;
+//            print_r($data);
+  //          $num = count($data);
+                $row++;
+        }
+        fclose($handle);
+    if (($handle = fopen($uploadfile, "w")) !== FALSE) {
+        foreach($table as $line){
+            fputcsv($handle,$line,$separator,$enclosure);
+        }
+    }
+    fclose($handle);
+
+    }
+
+
+
+
+    echo "Success !".$uploadfile;
 }
 
 

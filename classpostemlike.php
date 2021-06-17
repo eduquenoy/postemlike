@@ -1,4 +1,6 @@
 <?php
+require_once("config.php");
+
 //Objet postem
 class  POSTEMLIKE{
     /*
@@ -79,6 +81,17 @@ class  POSTEMLIKE{
         //print_r($table);
         fclose($handle);
         return($table);
+    }
+    function writeFile($fileName,$table){//Ecrit le fichier sur le disque
+        $dossier = getcwd();
+        $filename = $dossier."/files//".$this->courseId."_".$fileName.".csv";
+        if (($handle = fopen($filename, "w")) !== FALSE){//ouverture du fichier
+            foreach($table as $line){
+                fputcsv($handle,$line,',','"');
+            }
+        }
+        //print_r($table);
+        fclose($handle);
     }
     function message($message){
         switch($message){
@@ -225,17 +238,19 @@ class PTL_LEARNER extends POSTEMLIKE{
                 $sizeTable = count($table);
         
                 $head = $table[0]; //Récupération de l'entête
-                $sizeHead = count($head); //Nombre d'éléments de l'entête
+                $sizeHead = count($head); //Nombre d'éléments de l'entête (=nombre de colonnes du tableau)
         
                 $myInformations = array(); //Les informations de l'usager
         
                 //Recherche, dans le tableau, de la ligne de l'étudiant
                 $myId = $this->userId; //Le critère de recherche est l'ID
                 $flag = FALSE;
+                $myLine = -1; // Numéro de ligne contenant les informations de l'usager
                 for($c=1;$c<$sizeTable;$c++){
                     $line = $table[$c];
                     if(strcmp($myId,trim($line[0]))==0){
                         $myInformations = $line; //On a trouvé la ligne d'information de l'usager
+                        $myLine = $c;
                         $flag=TRUE;
                     }
                 }
@@ -243,12 +258,18 @@ class PTL_LEARNER extends POSTEMLIKE{
                 //Affichage des informations de l'usager
                 if($flag){
                     echo "<table id='tableuser' class='table table-striped table-bordered'>";
-                    for($c = 0;$c<$sizeHead;$c++){
+                    for($c = 0;$c<$sizeHead-1;$c++){ //On affiche tous les entêtes sauf le dernier ("dernier accès")
                         echo "<tr>";
                         echo "<th>".$head[$c]."&nbsp;: </th><td class='text-break'>".$myInformations[$c]."</td>";
                         echo "</tr>";
                     }
                     echo "</table>";
+                    // Réecriture du fichier avec la date de consultation
+                    
+                    $date = date("d/m/Y G:i");
+                    $table[$myLine][$sizeHead-1] = $date;
+                    $this->writeFile($fileName,$table);
+                    //print_r($table);  
                 }else{
                     echo $this->message("#NODATA");
                 }
@@ -256,7 +277,9 @@ class PTL_LEARNER extends POSTEMLIKE{
                 echo '</div></div></div>';  
                 $i++;      
                 }
-            echo '</div>';        
+            echo '</div>'; 
+            //On peut réécrire le tableau avec la date du dernier accès
+           
 		}
 		else{
 			$this->message("#NODATA");
