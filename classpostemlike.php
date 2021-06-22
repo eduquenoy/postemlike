@@ -199,7 +199,7 @@ echo '<h1></h1><div class="mb-3">
             echo "</tr></thead>";
         $fileNumber=0;    
         foreach($filesList as $fileName){
-            echo "<tr>";
+            echo "<tr id='tableTr".$fileNumber."'>";
             echo "<td>".$fileName."</td>";
             for($d=1;$d<count($this->fileListHeader);$d++){
                 echo "<td>"."<button class='btn btn-primary' id='".$this->fileListHeaderType[$d-1].$fileNumber."' name='".$fileName."' value='".$this->courseId."'>".$this->fileListHeader[$d]."</button>"."</td>";
@@ -226,7 +226,7 @@ class PTL_LEARNER extends POSTEMLIKE{
 			foreach($filesFound as $fileName ){ //On traite chaque fichier
                 echo '<div class="accordion-item">';
                 echo '<h2 class="accordion-header" id="flush-heading'.$i.'">';
-                echo '<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse'.$i.'" aria-expanded="false" aria-controls="flush-collapse'.$i.'">';
+                echo '<button class="accordion-button collapsed" userid="'.$this->userId.'" courseid="'.$this->courseId.'" id="accordion-button'.$i. '" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse'.$i.'" aria-expanded="false" aria-controls="flush-collapse'.$i.'">';
                 echo $fileName; 
                 echo '</button>';
                 echo '</h2>';    
@@ -264,11 +264,12 @@ class PTL_LEARNER extends POSTEMLIKE{
                         echo "</tr>";
                     }
                     echo "</table>";
+                    
                     // Réecriture du fichier avec la date de consultation
                     
-                    $date = date("d/m/Y G:i");
+                   /* $date = date("d/m/Y G:i");
                     $table[$myLine][$sizeHead-1] = $date;
-                    $this->writeFile($fileName,$table);
+                    $this->writeFile($fileName,$table);*/
                     //print_r($table);  
                 }else{
                     echo $this->message("#NODATA");

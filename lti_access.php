@@ -9,7 +9,7 @@
 
  <!--   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 -->	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-<link rel="stylesheet" href="https://postemlike.duquenoy.org/_css/styles.css" >
+<link rel="stylesheet" href="_css/styles.css" >
 
 <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 -->
@@ -62,7 +62,7 @@ if(!$error){  //Pas d'erreur, on peut commencer
 		//L'affichage ne sera pas le même selon qu'un fichier existe ou pas
 
 		//Affichage en tabulation
-		echo '<ul class="nav nav-tabs" id="myTab" role="tablist">
+		echo '<ul class="nav nav-tabs" id="instructorTab" role="tablist">
 				<li class="nav-item" role="presentation">
 		  			<button class="nav-link active" id="filelistzone-tab" data-bs-toggle="tab" data-bs-target="#filelistzone" type="button" role="tab" aria-controls="filelistzone" aria-selected="true">Bulletin de liaison</button>
 				</li>
@@ -72,8 +72,6 @@ if(!$error){  //Pas d'erreur, on peut commencer
 	  		</ul>';
 		
 		echo '<div class="tab-content" id="myTabContent">'; //Contenu des tabulations
-		
-		
 		echo '<div class="tab-pane fade show active" id="filelistzone" role="tabpanel" aria-labelledby="filelistzone-tab">';//Zone réservée à l'affichage du tableau de synthèse
 		$instructor->displayFilesList();
 		
@@ -94,6 +92,10 @@ if(!$error){  //Pas d'erreur, on peut commencer
 		- Si existe, charger le fichier dans un tableau
 		- rechercher l'email 
 		- afficher la ligne correspondante */
+		
+
+
+
 		$learner = new PTL_LEARNER($courseID, $userID);
 		$filesFound = $learner->getFilesList();
 		$learner->displayMyInformations($filesFound);
@@ -118,13 +120,18 @@ echo "Email : ".$context->getUserEmail()."<br>";
 echo "Liste des participants de cet espace : ";print_r($context->getUsersList());echo"<br>";
 //print_r($_POST);
 }
-echo '<footer  class="footer">
-<div class="container" style="background-color:#EEE; text-align: center; ">
+echo '<footer  class="footer" >
+<div class="container" >
 	<div class="row">
 		<div class="card-footer text-muted ">
-			<span style="color:#FFF; font-style: italic;
-			text-align: center;
-			font-size: smaller;">Conception E.Duquenoy - '.date("Y").' </span>
+			<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target=_"blank">
+			 <img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>
+			 - Code disponible sur <a href="https://github.com/eduquenoy/postemlike" target="_blank" >Github</a> 
+			 <br/>
+			 <a href="https://eric.duquenoy.org" target=_"blank">E.Duquenoy - '.date("Y").'</a>
+		
+
+
 		</div>
 	</div>
 </div>

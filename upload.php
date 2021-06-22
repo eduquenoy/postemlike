@@ -66,7 +66,7 @@ else {
 
 
 
-    echo "Success !".$uploadfile;
+    echo "Success !";
 }
 
 
