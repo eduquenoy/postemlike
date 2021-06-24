@@ -1,6 +1,6 @@
 function displayModal(modalTitle,modalText,type){
     $('#modalTitle').text(modalTitle);
-    $('#modalBody').text(modalText);
+    $('#modalBody').html(modalText);
     $('#informationModal-ok').text('Ok');
     switch(type){
         case 0 : //Information
@@ -17,7 +17,7 @@ function displayModal(modalTitle,modalText,type){
 }
 $('#informationModal-ok').click(function(){
     $('#informationModal').modal('hide');
-    location.reload();
+    //location.reload();
     //window.location.href = window.location;
     //window.opener.location.reload();
 

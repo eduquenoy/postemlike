@@ -47,7 +47,7 @@ switch($code){
         break;
     
     case 6: //Display the file list for the intructor
-        displayFilesList($courseId,$fileListHeader,$fileListHeaderType);
+        print_r(getFilesList($courseId));
         break;
     default :
         break;
@@ -141,7 +141,7 @@ function getFilesList($courseId){
     //echo "Liste des fichiers : ";
     //print_r($filesFound);
     if(!empty($filesFound)){
-        return($filesFound);
+        return(json_encode($filesFound));
     }else{
         return(FALSE);
     }
@@ -177,6 +177,10 @@ function displayAllInformations($fileName,$courseId){
     }
     echo "</tbody>";
     echo "</table>";
+}
+function getFilesContent($courseId){
+    $filesList = getFilesList($courseId); //Récupère la liste des fichiers
+
 }
 function displayFilesList($courseId,$fileListHeader,$fileListHeaderType){
     //Affichage de la liste des fichiers

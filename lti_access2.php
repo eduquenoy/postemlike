@@ -53,9 +53,12 @@ if(!$error){  //Pas d'erreur, on peut commencer
 	$courseId = $context->getCourseLKey(); //Identifiant du cours appelant
 	$userId = $context->getUserEmail(); //Identifiant de l'usager = email A REVOIR : il faudrait que cela soit réglable
 	$userRole = $context->getRoleLTI(); //Rôle de l'usager
+	$locale = $context->getLocale();
+	echo "<script>console.log('ICI');</script>";
 	echo '<input id="courseid" name="datas" type="hidden" value="'.$courseId.'">';
 	echo '<input id="userid" name="datas" type="hidden" value="'.$userId.'">';
 	echo '<input id="userole" name="datas" type="hidden" value="'.$userRole.'">';
+	echo '<input id="locale" name="datas" type="hidden" value="'.$locale.'">';
 
 	if($context->isInstructor()){
 		//Instructor
@@ -66,50 +69,35 @@ if(!$error){  //Pas d'erreur, on peut commencer
 		*/
 
 
-		$instructor = new PTL_INSTRUCTOR($courseId, $userId);
-		//L'affichage ne sera pas le même selon qu'un fichier existe ou pas
-
-		//Affichage en tabulation : Onglet Principal et onglet Ajouter
-/*		echo '<ul class="nav nav-tabs" id="instructorTab" role="tablist">
+		echo '<ul class="nav nav-tabs" id="instructorTab" role="tablist">
 				<li class="nav-item" role="presentation">
-		  			<button class="nav-link active" id="filelistzone-tab" data-bs-toggle="tab" data-bs-target="#filelistzone" type="button" role="tab" aria-controls="filelistzone" aria-selected="true">Bulletin de liaison</button>
+		  			<button class="nav-link active" id="filelistzone-tab" data-bs-toggle="tab" data-bs-target="#filelistzone" type="button" role="tab" >-</button>
 				</li>
 				<li class="nav-item" role="presentation">
-		  			<button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button" role="tab" aria-controls="upload" aria-selected="false">Ajouter</button>
-				</li>
-	  		</ul>';
-*/		echo '<ul class="nav nav-tabs" id="instructorTab" role="tablist">
-				<li class="nav-item" role="presentation">
-		  			<button class="nav-link active" id="filelistzone-tab" data-bs-toggle="tab" data-bs-target="#filelistzone" type="button" role="tab" >Bulletin de liaison</button>
-				</li>
-				<li class="nav-item" role="presentation">
-		  			<button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button" role="tab" >Ajouter</button>
+		  			<button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button" role="tab" >-</button>
 				</li>
 	  		</ul>';
 		
 		echo '<div class="tab-content" id="instructorTabContent">'; //Contenu des tabulations
 
-//		echo '<div class="tab-pane fade show active" id="filelistzone" role="tabpanel" aria-labelledby="filelistzone-tab">';//Zone réservée à l'affichage du tableau de synthèse
 		echo '<div class="tab-pane fade show active" id="filelistzone" role="tabpanel" >';//Zone réservée à l'affichage du tableau de synthèse
-		$instructor->displayFilesList();
+		//$instructor->displayFilesList();
 		
-		echo "<div id='zoneall'></div>";//Zone réservée à l'affichage du contenu d'un fichier
 		echo "</div>";//Zone réservée à l'affichage d'un contenu
 
-//		echo '  <div class="tab-pane fade " id="upload" role="tabpanel" aria-labelledby="upload-tab">';//Formulaire
 		echo '  <div class="tab-pane fade " id="upload" role="tabpanel" >';//Formulaire
 		//$instructor->uploadFile();//Dépot d'un fichier
 
 			echo '<h1></h1>';
         	echo '<div class="card text-dark bg-light" style="max-width: 40rem;">';
-        		echo '<div class="card-header">Instructions</div>
+        		echo '<div class="card-header" id="title-card-upload">Instructions</div>
         				<div class="card-body>
-        <p class="card-text">
+        <p class="card-text" id="text-card-upload">
         <ul>
         <li>Votre fichier de commentaires doit être enregistré au format <code>.csv</code> (valeurs séparées par une virgule).</li>
         <li>La <strong>première colonne</strong> de votre fichier doit contenir des <strong>emails</strong> d’utilisateurs.</li>
         <li>La <strong>première ligne</strong> de votre fichier doit contenir les <strong>noms des colonnes</strong>.</li> 
-        <ul><p/>';
+        </ul><p/>';
         echo '</div>';
         echo '</div>';
         echo '<p></p>';
@@ -117,14 +105,15 @@ if(!$error){  //Pas d'erreur, on peut commencer
         echo '<input type="hidden" name="MAX_FILE_SIZE" value="30000" />';
         echo '<input type="hidden" id="courseid" name="COURSE_ID" value="'.$courseId.'" />'; 
         echo '<input type="hidden" id="filetype" name="FILE_TYPE" value="'.$fileType.'" />';
-        echo '<label for="userfilename" class="form-label">Saisir un nom de fichier</label>';
-
+       	echo '<label for="userfilename" class="form-label" id="form-label-name">Saisir un nom de fichier</label>';
         echo '<input id="userfilename" name="USER_FILE_NAME" class="form-control" type="text" placeholder="Nom de fichier " aria-label="default input example">';
         echo '</div><h1></h1>';
         echo '  <div class="mb-3" style="max-width: 40rem;">
                 <h1></h1>
-                <label for="uploadfile" class="form-label">Choisir un fichier à envoyer : </label>
-                <input class="form-control" name="userfile" id="uploadfile" type="file" >
+				<label for="form-label-file" class="form-label" id="form-label-file-text">Choisissez un fichier</label>
+                <label for="uploadfile" class="form-control" id="form-label-file">Cliquer pour choisir un fichier</label>
+                <input class="custom-file-input" style="visibility:hidden;" name="userfile" id="uploadfile" type="file" >
+				
                 </div>';     
        	echo '</form>'; 
 		echo '	<h1></h1>
@@ -168,6 +157,7 @@ else{
 }
 //Afficher identifiant et rôle utilisateur
 if($debug){
+	echo "Langue : ".$context->getLocale()."<br>";
 echo "Identifiant : ".$context->getSakaiEuid()."<br>";
 echo "Nom complet : ".$context->getUserName()."<br>";
 echo "ID du l'utilisateur : ".$context->getUserLKey()."<br>";
@@ -244,6 +234,7 @@ echo '<footer  class="footer" >
 <script type="text/javascript" src="_js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script type="text/javascript" src="_js/locales.js"></script>
 <script type="text/javascript" src="_js/popups.js"></script>
 <script type="text/javascript" src="_js/messcripts.js"></script>
 

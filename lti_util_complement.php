@@ -19,6 +19,9 @@ class BLTIPOST extends BLTI
 			}
 		return($urlConsumer);
 	 }
+	 function getLocale(){
+		 return($_POST['launch_presentation_locale']);
+	 }
 	 function getUserRoleSakai()
 	 {
 		return($_POST['ext_sakai_role']);
