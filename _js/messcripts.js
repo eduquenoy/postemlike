@@ -432,7 +432,7 @@ function tableHide(){
     }
 }
 function version(){
-    var version = 0.2;
+    var version = 0.3;
     return version;
 }
 
