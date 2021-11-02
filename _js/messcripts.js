@@ -276,7 +276,7 @@ function instructorView(data,courseId,lang){
 //Boutons 
 //Instructor
 $('#filelistzone-tab').click(function(){
-    console.log("Bouon Bulletin liaison");
+    console.log("Bulletin liaison");
 });
 
 // Learner

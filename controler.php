@@ -6,6 +6,8 @@
 require_once("config.php");
 
 //print_r($_POST);//
+//echo "test";
+//$total = $_POST;
 $code = $_POST['code'];
 $fileName = $_POST['filename'];
 $courseId=$_POST['courseid'];
@@ -48,6 +50,7 @@ switch($code){
     
     case 6: //Display the file list for the intructor
         print_r(getFilesList($courseId));
+        //echo "TEST";
         break;
     default :
         break;
