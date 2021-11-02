@@ -5,55 +5,85 @@
 */
 require_once("config.php");
 
+/*
+    Récupération de l'URL du controleur
+*/
+if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+    $urlControler = "https"; 
+}
+else{
+    $urlControler = "http"; 
+}
+// Ajoutez // à l'URL.
+$urlControler .= "://"; 
+
+// Ajoutez l'hôte (nom de domaine, ip) à l'URL.
+$urlControler .= $_SERVER['HTTP_HOST']; 
+
+// Ajouter l'emplacement de la ressource demandée à l'URL
+//$url .= $_SERVER['REQUEST_URI']; 
+  
+
 //print_r($_POST);//
 //echo "test";
 //$total = $_POST;
-$code = $_POST['code'];
-$fileName = $_POST['filename'];
-$courseId=$_POST['courseid'];
-$userId=$_POST['userid'];
+$messageService="";
+//Lecture des variables transmises 
+$code = $_POST['code']; //Code de l'action à exécuter
+$fileName = $_POST['filename'];//Nom du fichier
+$courseId=$_POST['courseid'];//Code du cours utilisant l'outil
+$userId=$_POST['userid'];//Identifiant de l'usager
 $newName = $_POST['newname'];
-switch($code){ 
-    case 0: //display
-        //On renvoie un contenu HTML complet avec le contenu du fichier qu'on affichera sur la zone dédiée (div)
-        displayAllInformations($fileName,$courseId);
-        break;
 
-    case 1: //update
-        break;
 
-    case 2: //delete
-        $uploaddir = getcwd()."/files//"; //Chemin vers dépôt des fichiers
-        $fullFileName = $uploaddir.$courseId."_".$fileName.".csv";
-        if(unlink($fullFileName)){
-            echo "Suppression effectuée. Rafraichir la fenêtre pour mettre à jour l'affichage";
-        }else{
-            echo "La suppression n'a pas pu être effectuée";
-        }
+$urlReferer = parse_url($_SERVER['HTTP_REFERER'],PHP_URL_SCHEME)."://".parse_url($_SERVER['HTTP_REFERER'],PHP_URL_HOST) ;
+//$messageService = $urlReferer;
+if($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'){
+    if(@isset($_SERVER['HTTP_REFERER']) && $urlReferer == $urlControler){
+        switch($code){ 
+            case 0: //display
+            //On renvoie un contenu HTML complet avec le contenu du fichier qu'on affichera sur la zone dédiée (div)
+            displayAllInformations($fileName,$courseId);
+            break;
 
-        break;
+            case 1: //update
+            break;
 
-    case 3: //download
-//        $uploaddir = getcwd()."/files//";
-        $url = "https://postemlike.duquenoy.org/files/".$courseId."_".$fileName.".csv";
-        //echo "<a href='".$url."' target='_blank'>Votre fichier</a>";
-        echo $url;
-        break;
-    case 4: //rename file
-        $uploaddir = getcwd()."/files//"; //Chemin vers dépôt des fichiers
-        $fullFileName = $uploaddir.$courseId."_".$fileName.".csv";
-        break;
-    
-    case 5: //update file with the last consultation date
-        updateFileWithConsultationDate($fileName,$courseId,$userId);
-        break;
-    
-    case 6: //Display the file list for the intructor
-        print_r(getFilesList($courseId));
-        //echo "TEST";
-        break;
-    default :
-        break;
+            case 2: //delete
+            $uploaddir = getcwd().$filesPath; //Chemin vers dépôt des fichiers
+            $fullFileName = $uploaddir.$courseId."_".$fileName.".csv";
+            if(unlink($fullFileName)){
+                echo "Suppression effectuée. Rafraichir la fenêtre pour mettre à jour l'affichage";
+            }else{
+                echo "La suppression n'a pas pu être effectuée";
+            }
+
+            break;
+
+            case 3: //download
+        //        $uploaddir = getcwd()."/files//";
+            $url = "https://postemlike.duquenoy.org/files/".$courseId."_".$fileName.".csv";
+            //echo "<a href='".$url."' target='_blank'>Votre fichier</a>";
+            echo $url;
+            break;
+            
+            case 4: //rename file
+            $uploaddir = getcwd().$filesPath; //Chemin vers dépôt des fichiers
+            $fullFileName = $uploaddir.$courseId."_".$fileName.".csv";
+            break;
+        
+            case 5: //update file with the last consultation date
+            updateFileWithConsultationDate($fileName,$courseId,$userId);
+            break;
+        
+            case 6: //Display the file list for the intructor
+            print_r(getFilesList($courseId));
+            //echo "TEST";
+            break;
+            default :
+            break;
+}
+} 
 }
 function updateFileWithConsultationDate($fileName,$courseId,$userId){
     //Met à jour le fichier avec la date de consultation par l'étudiant
@@ -156,6 +186,8 @@ function displayAllInformations($fileName,$courseId){
     $head = $table[0]; //Récupération de l'entête
     $sizeHead = count($head); //Nombre d'éléments de l'entête
     //Il faut construire un tableau HTML
+   // echo "<p>Ceci est un message de service</p>";
+   // var_dump($messageService);
     echo "<table id=tableall class='table table-striped table-bordered caption-top'>";
     echo '<caption>'.$fileName.'</caption>';
     //Entête
