@@ -17,6 +17,7 @@ Imaginons que vous veniez de corriger des comptes-rendus de travaux pratiques et
 #### Installation
 - l'outil est développé en PHP, il nécessite donc un serveur supportant ce langage. 
 - il faudra également modifier le fichier `config.txt`  qui conient les clefs/secrets du protocole LTI (norme v1)
+- l'URL de lancement de l'outil ressemble à https://mon-url.com/lti_access.php
 
 #### Développements à prévoir (feuille de route)
 L'outil est encore en développement mais fonctionne correctement. Plusieurs améliorations, visibles ou d'arrière plan, sont à envisager :
@@ -44,6 +45,8 @@ Imagine that you have just corrected practical work reports and you want to send
 #### Installation
 - the tool is developed in PHP, so it requires a server supporting this language.
 - it will also be necessary to modify the `config.txt` file which contains the keys / secrets of the LTI protocol (standard v1)
+- the tool launch URL looks like https://mon-url.com/lti_access.php
+
 
 #### Developments to be planned (roadmap)
 The tool is still in development but works fine. Several improvements, visible or in the background, should be considered:
