@@ -1,7 +1,6 @@
 <?php 
 
 /* A faire :
-- vérification URL appelante 
 */
 require_once("config.php");
 
@@ -19,15 +18,9 @@ $urlControler .= "://";
 
 // Ajoutez l'hôte (nom de domaine, ip) à l'URL.
 $urlControler .= $_SERVER['HTTP_HOST']; 
-
-// Ajouter l'emplacement de la ressource demandée à l'URL
-//$url .= $_SERVER['REQUEST_URI']; 
   
 
-//print_r($_POST);//
-//echo "test";
-//$total = $_POST;
-$messageService="";
+//$messageService="";
 //Lecture des variables transmises 
 $code = $_POST['code']; //Code de l'action à exécuter
 $fileName = $_POST['filename'];//Nom du fichier
@@ -61,8 +54,7 @@ if($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'){
             break;
 
             case 3: //download
-        //        $uploaddir = getcwd()."/files//";
-            $url = "https://postemlike.duquenoy.org/files/".$courseId."_".$fileName.".csv";
+            $url = $urlControler."/files/".$courseId."_".$fileName.".csv";
             //echo "<a href='".$url."' target='_blank'>Votre fichier</a>";
             echo $url;
             break;
@@ -91,8 +83,6 @@ function updateFileWithConsultationDate($fileName,$courseId,$userId){
     $table = getFile($fileName,$courseId);
     $sizeTable = count($table);
     $sizeHead = count($table[0]);
-    //echo "ID : ".$userId;
-    //echo "Taille tableau : ".$sizeTable." Taille ligne : ".$sizeHead;
     //Modification de la ligne
     //Recherche, dans le tableau, de la ligne de l'étudiant
     $myId = $userId; //Le critère de recherche est l'ID
@@ -113,8 +103,6 @@ function updateFileWithConsultationDate($fileName,$courseId,$userId){
         $date = date("d/m/Y G:i");
         $table[$myLine][$sizeHead-1] = $date;
         writeFile($fileName,$courseId,$table);
-        //echo "Ecriture ok";
-        //print_r($table);  
     }else{
         //echo "Aucune donnée à afficher";
     }
@@ -139,7 +127,6 @@ function getFile($fileName,$courseId){ //Renvoie un tableau contenant la totalit
             $table[$row++] = $data;//On lit les entêtes
         }
     }
-    //print_r($table);
     fclose($handle);
     return($table);//Le tableau contient toutes les données
 }

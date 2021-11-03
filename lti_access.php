@@ -53,6 +53,12 @@ if(!$error){  //Pas d'erreur, on peut commencer
 	$courseId = $context->getCourseLKey(); //Identifiant du cours appelant
 	$userId = $context->getUserEmail(); //Identifiant de l'usager = email A REVOIR : il faudrait que cela soit réglable
 	$userRole = $context->getRoleLTI(); //Rôle de l'usager
+	if(strstr($userRole, "Instructor")){
+		$userRole="Instructor";
+	}
+	else{
+		$userRole="Learner";
+	}
 	$locale = $context->getLocale();
 	echo "<script>console.log('ICI');</script>";
 	echo '<input id="courseid" name="datas" type="hidden" value="'.$courseId.'">';

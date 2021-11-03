@@ -7,6 +7,7 @@ $( document ).ready(function() {
     var userId = $('#userid').val();
     var courseId = $('#courseid').val();
     var userRole = $('#userole').val();
+    console.log("Role : "+userRole);
     var locale = $('#locale').val();
     switch(locale){
         case 'fr':
@@ -20,7 +21,7 @@ $( document ).ready(function() {
         default :
         var lang = "en";
     }
-    console.log("Langue détectée : "+lang);
+    console.log("La langue détectée : "+lang);
     /*console.log("Chargement outil Postemlike");
     console.log("UserId : "+userId);
     console.log("CourseId : "+courseId);
